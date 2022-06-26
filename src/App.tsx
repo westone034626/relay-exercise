@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useLazyLoadQuery, graphql } from 'react-relay';
 
-function App() {
+const App = () => {
+  const { todos } = useLazyLoadQuery<AppQuery>(
+    graphql`
+      query AppQuery {
+        todos {
+          edges {
+            node {
+              id
+              title
+            }
+          }
+        }
+      }
+    `,
+    {},
+    {
+      fetchPolicy: 'network-only',
+    }
+  );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Todos</h1>
+      <div style={{ flexDirection: 'column' }}>
+        {todos.edges.map(({ node }) => (
+          <div key={node.id} style={{ flexDirection: 'column' }}>
+            <p>id: {node.id}</p>
+            <p>title: {node.title}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default App;

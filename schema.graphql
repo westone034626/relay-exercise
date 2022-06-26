@@ -1,0 +1,26 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+type Mutation {
+  _: Boolean
+  createTodo(title: String!, description: String!): Todo!
+  updateTodo(id: ID!, title: String!, description: String!): Todo!
+  deleteTodo(id: ID!): ID!
+}
+
+type Query {
+  _: Boolean
+  todos: [Todo!]!
+  todo(id: ID!): Todo!
+}
+
+type Todo {
+  id: ID!
+  title: String!
+  description: String!
+  timestamp: Float
+}
+
