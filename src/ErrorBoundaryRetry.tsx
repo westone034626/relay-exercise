@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * A reusable component for handling errors in a React (sub)tree.
@@ -8,6 +8,7 @@ type State = {
   error: Error;
 };
 class ErrorBoundaryRetry extends React.Component<Props, State> {
+  // @ts-ignore
   state = {
     error: null,
   };
@@ -24,13 +25,19 @@ class ErrorBoundaryRetry extends React.Component<Props, State> {
     if (error != null) {
       return (
         <div>
+          {/* @ts-ignore */}
           <p>Error: {error.message}</p>
+          {/* @ts-ignore */}
           <pre>{JSON.stringify(error.source, null, 2)}</pre>
+          {/* @ts-ignore */}
           <button onClick={() => this.setState({ error: null })}>retry</button>
         </div>
       );
     }
 
+    {
+    }
+    /* @ts-ignore */
     return this.props.children;
   }
 }
