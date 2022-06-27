@@ -10,6 +10,7 @@
     "@types/node": "^16.11.41",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-relay": "^14.0.0",
@@ -25,7 +26,7 @@
     "relay": "yarn run relay-compiler",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateSchema": "get-graphql-schema http://localhost:8000/graphql > schema.graphql --graphql"
+    "updateSchema": "get-graphql-schema -h 'X-Parse-Application-Id=APPLICATION_ID' -h 'X-Parse-Master-Key=MASTER_KEY' http://localhost:1337/graphql > schema.graphql --graphql"
   },
   "relay": {
     "src": "./src/",
@@ -52,9 +53,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
+    "@types/lodash": "^4.14.182",
     "@types/react-relay": "^13.0.2",
     "@types/relay-runtime": "^13.0.3",
     "babel-plugin-import": "^1.13.5",
+    "babel-plugin-macros": "^3.1.0",
     "babel-plugin-relay": "^14.0.0",
     "graphql": "^16.5.0",
     "relay-compiler-language-typescript": "^15.0.1",
