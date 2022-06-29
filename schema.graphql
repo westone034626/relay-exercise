@@ -38,7 +38,7 @@ scalar Any
 """
 Use Inline Fragment on Array to get results: https://graphql.org/learn/queries/#inline-fragments
 """
-union ArrayResult = Element | Role | User | Posting | Todo
+union ArrayResult = Element | Role | User | Todo
 
 """
 The ArrayWhereInput input type is used in operations that involve filtering objects by a field of type Array.
@@ -305,31 +305,6 @@ type CreateFilePayload {
 }
 
 """
-The CreatePostingFieldsInput input type is used in operations that involve creation of objects in the Posting class.
-"""
-input CreatePostingFieldsInput {
-  ACL: ACLInput
-
-  """This is the object category."""
-  category: String
-
-  """This is the object title."""
-  title: String
-}
-
-input CreatePostingInput {
-  """These are the fields that will be used to create the new object."""
-  fields: CreatePostingFieldsInput
-  clientMutationId: String
-}
-
-type CreatePostingPayload {
-  """This is the created object."""
-  posting: Posting!
-  clientMutationId: String
-}
-
-"""
 The CreateRoleFieldsInput input type is used in operations that involve creation of objects in the Role class.
 """
 input CreateRoleFieldsInput {
@@ -503,18 +478,6 @@ input DeleteClassInput {
 type DeleteClassPayload {
   """This is the deleted class."""
   class: Class!
-  clientMutationId: String
-}
-
-input DeletePostingInput {
-  """This is the object id. You can use either the global or the object id."""
-  id: ID!
-  clientMutationId: String
-}
-
-type DeletePostingPayload {
-  """This is the deleted object."""
-  posting: Posting!
   clientMutationId: String
 }
 
@@ -917,21 +880,6 @@ type Mutation {
   deleteUser(input: DeleteUserInput!): DeleteUserPayload
 
   """
-  The createPosting mutation can be used to create a new object of the Posting class.
-  """
-  createPosting(input: CreatePostingInput!): CreatePostingPayload
-
-  """
-  The updatePosting mutation can be used to update an object of the Posting class.
-  """
-  updatePosting(input: UpdatePostingInput!): UpdatePostingPayload
-
-  """
-  The deletePosting mutation can be used to delete an object of the Posting class.
-  """
-  deletePosting(input: DeletePostingInput!): DeletePostingPayload
-
-  """
   The createTodo mutation can be used to create a new object of the Todo class.
   """
   createTodo(input: CreateTodoInput!): CreateTodoPayload
@@ -1204,155 +1152,6 @@ input PolygonWhereInput {
   geoIntersects: GeoIntersectsInput
 }
 
-"""
-The Posting object type is used in operations that involve outputting objects of Posting class.
-"""
-type Posting implements ParseObject & Node {
-  """The ID of an object"""
-  id: ID!
-
-  """This is the object id."""
-  objectId: ID!
-
-  """This is the date in which the object was created."""
-  createdAt: Date!
-
-  """This is the date in which the object was las updated."""
-  updatedAt: Date!
-  ACL: ACL!
-
-  """This is the object category."""
-  category: String
-
-  """This is the object title."""
-  title: String
-}
-
-"""A connection to a list of items."""
-type PostingConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """A list of edges."""
-  edges: [PostingEdge]
-
-  """
-  This is the total matched objecs count that is returned when the count flag is set.
-  """
-  count: Int!
-}
-
-"""An edge in a connection."""
-type PostingEdge {
-  """The item at the end of the edge"""
-  node: Posting
-
-  """A cursor for use in pagination"""
-  cursor: String!
-}
-
-"""
-The PostingOrder input type is used when sorting objects of the Posting class.
-"""
-enum PostingOrder {
-  ACL_ASC
-  ACL_DESC
-  category_ASC
-  category_DESC
-  createdAt_ASC
-  createdAt_DESC
-  objectId_ASC
-  objectId_DESC
-  title_ASC
-  title_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-  id_ASC
-  id_DESC
-}
-
-"""Allow to link OR add and link an object of the Posting class."""
-input PostingPointerInput {
-  """
-  Link an existing object from Posting class. You can use either the global or the object id.
-  """
-  link: ID
-
-  """Create and link an object from Posting class."""
-  createAndLink: CreatePostingFieldsInput
-}
-
-"""
-Allow to add, remove, createAndAdd objects of the Posting class into a relation field.
-"""
-input PostingRelationInput {
-  """
-  Add existing objects from the Posting class into the relation. You can use either the global or the object ids.
-  """
-  add: [ID!]
-
-  """
-  Remove existing objects from the Posting class out of the relation. You can use either the global or the object ids.
-  """
-  remove: [ID!]
-
-  """Create and add objects of the Posting class into the relation."""
-  createAndAdd: [CreatePostingFieldsInput!]
-}
-
-"""
-The PostingRelationWhereInput input type is used in operations that involve filtering objects of Posting class.
-"""
-input PostingRelationWhereInput {
-  """
-  Run a relational/pointer query where at least one child object can match.
-  """
-  have: PostingWhereInput
-
-  """
-  Run an inverted relational/pointer query where at least one child object can match.
-  """
-  haveNot: PostingWhereInput
-
-  """Check if the relation/pointer contains objects."""
-  exists: Boolean
-}
-
-"""
-The PostingWhereInput input type is used in operations that involve filtering objects of Posting class.
-"""
-input PostingWhereInput {
-  """This is the object ACL."""
-  ACL: ObjectWhereInput
-
-  """This is the object category."""
-  category: StringWhereInput
-
-  """This is the object createdAt."""
-  createdAt: DateWhereInput
-
-  """This is the object objectId."""
-  objectId: IdWhereInput
-
-  """This is the object title."""
-  title: StringWhereInput
-
-  """This is the object updatedAt."""
-  updatedAt: DateWhereInput
-
-  """This is the object id."""
-  id: IdWhereInput
-
-  """This is the OR operator to compound constraints."""
-  OR: [PostingWhereInput!]
-
-  """This is the AND operator to compound constraints."""
-  AND: [PostingWhereInput!]
-
-  """This is the NOR operator to compound constraints."""
-  NOR: [PostingWhereInput!]
-}
-
 """Allow to manage public rights."""
 type PublicACL {
   """Allow anyone to read the current object."""
@@ -1458,46 +1257,6 @@ type Query {
     """The read options for the query to be executed."""
     options: ReadOptionsInput
   ): UserConnection!
-
-  """
-  The posting query can be used to get an object of the Posting class by its id.
-  """
-  posting(
-    """This is the object id. You can use either the global or the object id."""
-    id: ID!
-
-    """The read options for the query to be executed."""
-    options: ReadOptionsInput
-  ): Posting!
-
-  """The postings query can be used to find objects of the Posting class."""
-  postings(
-    """
-    These are the conditions that the objects need to match in order to be found.
-    """
-    where: PostingWhereInput
-
-    """The fields to be used when sorting the data fetched."""
-    order: [PostingOrder!]
-
-    """This is the number of objects that must be skipped to return."""
-    skip: Int
-
-    """Returns the items in the list that come after the specified cursor."""
-    after: String
-
-    """Returns the first n items from the list."""
-    first: Int
-
-    """Returns the items in the list that come before the specified cursor."""
-    before: String
-
-    """Returns the last n items from the list."""
-    last: Int
-
-    """The read options for the query to be executed."""
-    options: ReadOptionsInput
-  ): PostingConnection!
 
   """
   The todo query can be used to get an object of the Todo class by its id.
@@ -2410,34 +2169,6 @@ input UpdateClassInput {
 type UpdateClassPayload {
   """This is the updated class."""
   class: Class!
-  clientMutationId: String
-}
-
-"""
-The UpdatePostingFieldsInput input type is used in operations that involve creation of objects in the Posting class.
-"""
-input UpdatePostingFieldsInput {
-  ACL: ACLInput
-
-  """This is the object category."""
-  category: String
-
-  """This is the object title."""
-  title: String
-}
-
-input UpdatePostingInput {
-  """This is the object id. You can use either the global or the object id."""
-  id: ID!
-
-  """These are the fields that will be used to update the object."""
-  fields: UpdatePostingFieldsInput
-  clientMutationId: String
-}
-
-type UpdatePostingPayload {
-  """This is the updated object."""
-  posting: Posting!
   clientMutationId: String
 }
 
