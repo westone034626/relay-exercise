@@ -26,7 +26,9 @@
     "relay": "yarn run relay-compiler",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "updateSchema": "get-graphql-schema -h 'X-Parse-Application-Id=APPLICATION_ID' -h 'X-Parse-Master-Key=MASTER_KEY' http://localhost:1337/graphql > schema.graphql --graphql"
+    "updateSchema": "get-graphql-schema -h 'X-Parse-Application-Id=APPLICATION_ID' -h 'X-Parse-Master-Key=MASTER_KEY' http://localhost:1337/graphql > schema.graphql --graphql",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist"
   },
   "relay": {
     "src": "./src/",
@@ -59,6 +61,7 @@
     "babel-plugin-import": "^1.13.5",
     "babel-plugin-macros": "^3.1.0",
     "babel-plugin-relay": "^14.0.0",
+    "gh-pages": "^4.0.0",
     "graphql": "^16.5.0",
     "relay-compiler-language-typescript": "^15.0.1",
     "relay-config": "^12.0.1"
