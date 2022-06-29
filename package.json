@@ -28,7 +28,7 @@
     "eject": "react-scripts eject",
     "updateSchema": "get-graphql-schema -h 'X-Parse-Application-Id=APPLICATION_ID' -h 'X-Parse-Master-Key=MASTER_KEY' http://localhost:1337/graphql > schema.graphql --graphql",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d build"
   },
   "relay": {
     "src": "./src/",
