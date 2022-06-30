@@ -1,6 +1,5 @@
-import React from "react";
 import { useLazyLoadQuery } from "react-relay";
-import { graphql } from "babel-plugin-relay/macro";
+import graphql from "babel-plugin-relay/macro";
 import { AppQuery } from "./__generated__/AppQuery.graphql";
 import _ from "lodash";
 
