@@ -31,12 +31,15 @@ jobs:
           REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
           REACT_APP_PARSE_APP_ID: ${{ secrets.REACT_APP_PARSE_APP_ID }}
           REACT_APP_PARSE_MASTER_KEY: ${{ secrets.REACT_APP_PARSE_MASTER_KEY }}
+          GRAPHQL_SERVER_URL_WITH_HEADER: ${{ secrets.GRAPHQL_SERVER_URL_WITH_HEADER }}
 
         run: |
           touch .env
           echo REACT_APP_SERVER_URL="$REACT_APP_SERVER_URL" >> .env
           echo REACT_APP_PARSE_APP_ID="$REACT_APP_PARSE_APP_ID" >> .env
           echo REACT_APP_PARSE_MASTER_KEY="$REACT_APP_PARSE_MASTER_KEY" >> .env
+          echo GRAPHQL_SERVER_URL_WITH_HEADER="$GRAPHQL_SERVER_URL_WITH_HEADER" >> .env
+          cat .env
 
       - name: Build
         run: yarn run build
