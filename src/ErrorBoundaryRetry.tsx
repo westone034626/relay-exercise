@@ -34,9 +34,6 @@ class ErrorBoundaryRetry extends React.Component<Props, State> {
         </div>
       );
     }
-
-    {
-    }
     /* @ts-ignore */
     return this.props.children;
   }
