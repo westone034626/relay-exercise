@@ -41,13 +41,18 @@ jobs:
           echo GRAPHQL_SERVER_URL_WITH_HEADER="$GRAPHQL_SERVER_URL_WITH_HEADER" >> .env
           cat .env
 
-      - name: Build
-        run: yarn run build
+      - name: Install and Build
+        run: |
+          yarn
+          yarn run build
+        working-directory: website/
         env:
           NODE_ENV: production
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: website/build
+          CLEAN: true
