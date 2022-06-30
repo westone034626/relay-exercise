@@ -45,7 +45,6 @@ jobs:
         run: |
           yarn
           yarn run build
-        working-directory: website/
         env:
           NODE_ENV: production
 
@@ -54,5 +53,5 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: website/build
+          FOLDER: ./build
           CLEAN: true
