@@ -1,0 +1,50 @@
+name: "Deploy Project"
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@main
+        with:
+          node-version: 14.x
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-build-${{hashFiles('**/yarn.lock')}}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ runner.OS }}-
+
+      - name: Install dependencies
+        run: yarn install --prod --pure-lockfile
+
+      - name: Create env file
+        env:
+          REACT_APP_SERVER_URL: ${{ secrets.REACT_APP_SERVER_URL }}
+          REACT_APP_PARSE_APP_ID: ${{ secrets.REACT_APP_PARSE_APP_ID }}
+          REACT_APP_PARSE_MASTER_KEY: ${{ secrets.REACT_APP_PARSE_MASTER_KEY }}
+
+        run: |
+          touch .env
+          echo REACT_APP_SERVER_URL="$REACT_APP_SERVER_URL" >> .env
+          echo REACT_APP_PARSE_APP_ID="$REACT_APP_PARSE_APP_ID" >> .env
+          echo REACT_APP_PARSE_MASTER_KEY="$REACT_APP_PARSE_MASTER_KEY" >> .env
+
+      - name: Build
+        run: yarn run build
+        env:
+          NODE_ENV: production
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
