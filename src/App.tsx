@@ -2,6 +2,8 @@ import { useLazyLoadQuery } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { AppQuery } from "./__generated__/AppQuery.graphql";
 import _ from "lodash";
+import { useState } from "react";
+import EditorModal from "./components/EditorModal";
 
 const App = () => {
   const { todos } = useLazyLoadQuery<AppQuery>(
@@ -27,6 +29,9 @@ const App = () => {
     .filter((edge) => Boolean(edge?.node))
     .map((edge) => edge?.node as { id: string; title: string })
     .value();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [tempTodos, setTempTodos] = useState<string[]>([]);
   return (
     <div>
       <h1>Todos</h1>
@@ -38,6 +43,35 @@ const App = () => {
           </div>
         ))}
       </div>
+      {tempTodos.map((tempTodo, idx) => (
+        <div key={idx} style={{ flexDirection: "column" }}>
+          <p>id: {idx}</p>
+          <p>title: {tempTodo}</p>
+        </div>
+      ))}
+      <button
+        style={{
+          position: "fixed",
+          bottom: 50,
+          right: 50,
+        }}
+        onClick={() => setModalOpen((prev) => !prev)}
+      >
+        Add To do
+      </button>
+      {modalOpen && (
+        <EditorModal
+          style={{
+            top: 24,
+            bottom: 24,
+            left: 24,
+            right: 24,
+            backgroundColor: "whitesmoke",
+          }}
+          onClose={() => setModalOpen((prev) => !prev)}
+          onSave={(todo) => setTempTodos((prev) => [...prev, todo])}
+        />
+      )}
     </div>
   );
 };
