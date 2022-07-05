@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 function useClickEffect<T extends HTMLElement>(
   ref: React.MutableRefObject<T | null>,
@@ -11,7 +11,7 @@ function useClickEffect<T extends HTMLElement>(
     }
     document.addEventListener("touchstart", touchHandler);
     return () => document.removeEventListener("touchstart", touchHandler);
-  }, []);
+  }, [ref, effect]);
 }
 
 export default useClickEffect;

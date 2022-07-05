@@ -1,5 +1,11 @@
-import _ from "lodash";
-import { useEffect, useMemo, useRef, CSSProperties, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  CSSProperties,
+  useState,
+  useCallback,
+} from "react";
 import useClickEffect from "../hook/useClickEffect";
 
 const EditorModal = ({
@@ -21,7 +27,7 @@ const EditorModal = ({
     window.visualViewport.addEventListener("resize", resizeHandler);
     return () =>
       window.visualViewport.removeEventListener("resize", resizeHandler);
-  }, []);
+  }, [initialViewportHeight]);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const focusInput = () => {
@@ -34,9 +40,13 @@ const EditorModal = ({
   const [blurAccept, setBlurAccept] = useState(true);
 
   const controllerRef = useRef<HTMLDivElement | null>(null);
-  useClickEffect(controllerRef, (isClicked) => {
-    setBlurAccept(!isClicked);
-  });
+  const onTargetElementClick = useCallback(
+    (isClicked: boolean) => {
+      setBlurAccept(!isClicked);
+    },
+    [setBlurAccept]
+  );
+  useClickEffect(controllerRef, onTargetElementClick);
 
   function blurHandler() {
     if (blurAccept) {

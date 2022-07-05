@@ -45,7 +45,7 @@ const App = () => {
     window.visualViewport.addEventListener("resize", resizeHandler);
     return () =>
       window.visualViewport.removeEventListener("resize", resizeHandler);
-  }, []);
+  }, [initialVisualViewPortHeight]);
   return (
     <div>
       <h1>Todos</h1>
