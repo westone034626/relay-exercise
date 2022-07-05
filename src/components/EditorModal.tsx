@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  CSSProperties,
-  useState,
-  useCallback,
-} from "react";
+import { useEffect, useRef, CSSProperties, useState, useCallback } from "react";
 import useClickEffect from "../hook/useClickEffect";
 
 const EditorModal = ({
