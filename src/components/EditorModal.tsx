@@ -1,5 +1,6 @@
 import _ from "lodash";
-import { useEffect, useMemo, useRef, CSSProperties } from "react";
+import { useEffect, useMemo, useRef, CSSProperties, useState } from "react";
+import useClickEffect from "../hook/useClickEffect";
 
 const EditorModal = ({
   style,
@@ -10,37 +11,47 @@ const EditorModal = ({
   onClose: () => void;
   onSave: (data: string) => void;
 }) => {
-  const divRef = useRef<HTMLDivElement | null>(null);
-  const height = useMemo(() => window.visualViewport.height, []);
+  const [controllerBottom, setControllerBottom] = useState(0);
+  const initialViewportHeight = useMemo(() => window.visualViewport.height, []);
   useEffect(() => {
     function resizeHandler() {
-      divRef.current &&
-        (divRef.current.style.bottom = `${
-          height - window.visualViewport.height
-        }px`);
+      const currentViewportHeight = window.visualViewport.height;
+      setControllerBottom(initialViewportHeight - currentViewportHeight);
     }
     window.visualViewport.addEventListener("resize", resizeHandler);
     return () =>
       window.visualViewport.removeEventListener("resize", resizeHandler);
   }, []);
 
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const focusInput = () => {
+    inputRef.current?.focus();
+  };
+  useEffect(() => {
+    focusInput();
+  }, []);
+
+  const [blurAccept, setBlurAccept] = useState(true);
+
+  const controllerRef = useRef<HTMLDivElement | null>(null);
+  useClickEffect(controllerRef, (isClicked) => {
+    setBlurAccept(!isClicked);
+  });
+
   function blurHandler() {
-    // divRef.current && (divRef.current.style.bottom = "0px");
-    onClose();
+    if (blurAccept) {
+      setControllerBottom(0);
+    } else {
+      focusInput();
+    }
   }
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  const [text, setText] = useState("");
 
-  useEffect(() => {
-    function scrollHandler() {
-      inputRef.current?.blur();
-    }
-    window.addEventListener("scroll", scrollHandler);
-    return () => window.removeEventListener("scroll", scrollHandler);
-  }, []);
+  const onReset = () => {
+    setText("");
+    setBlurAccept(true);
+  };
 
   return (
     <div
@@ -55,6 +66,8 @@ const EditorModal = ({
       }}
     >
       <input
+        onChange={({ target: { value } }) => setText(value)}
+        value={text}
         style={{
           fontSize: "16px",
           position: "sticky",
@@ -71,11 +84,12 @@ const EditorModal = ({
         ref={inputRef}
       />
       <div
+        ref={controllerRef}
         style={{
           position: "fixed",
           width: "100%",
           left: 0,
-          bottom: 0,
+          bottom: controllerBottom,
           backgroundColor: "white",
           border: "1px solid black",
           display: "flex",
@@ -83,23 +97,49 @@ const EditorModal = ({
           alignItems: "center",
           boxSizing: "border-box",
         }}
-        ref={divRef}
       >
-        <div onClick={onClose} style={{ padding: 24 }}>
-          취소
+        <div
+          onClick={onClose}
+          style={{ flex: 1, padding: "24px 0", textAlign: "center" }}
+        >
+          닫기
         </div>
         <div
           onClick={() => {
-            onSave(inputRef.current?.value || "");
-            onClose();
+            onReset();
+            focusInput();
           }}
-          style={{ padding: 24 }}
+          style={{ flex: 1, padding: "24px 0", textAlign: "center" }}
         >
-          저장
+          비우기
         </div>
+        {Boolean(text) && (
+          <div
+            onClick={() => {
+              onSave(text);
+              onClose();
+            }}
+            style={{
+              flex: 1,
+              padding: "24px 0",
+              textAlign: "center",
+            }}
+          >
+            저장
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
 export default EditorModal;
+
+// useEffect(() => {
+//   function scrollHandler() {
+//     // inputRef.current?.blur();
+//     onClose();
+//   }
+//   window.addEventListener("scroll", scrollHandler);
+//   return () => window.removeEventListener("scroll", scrollHandler);
+// }, []);
