@@ -34,8 +34,8 @@ const App = () => {
   const [tempTodos, setTempTodos] = useState<string[]>([]);
   const [activeModal, setActiveModal] = useState(true);
 
-  const initialVisualViewPortHeight = window.visualViewport.height;
   useEffect(() => {
+    const initialVisualViewPortHeight = window.visualViewport.height;
     function resizeHandler() {
       const currentVisualViewPortHeight = window.visualViewport.height;
       setActiveModal(
@@ -45,7 +45,7 @@ const App = () => {
     window.visualViewport.addEventListener("resize", resizeHandler);
     return () =>
       window.visualViewport.removeEventListener("resize", resizeHandler);
-  }, [initialVisualViewPortHeight]);
+  }, []);
   return (
     <div>
       <h1>Todos</h1>

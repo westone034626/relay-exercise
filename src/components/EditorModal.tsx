@@ -18,8 +18,8 @@ const EditorModal = ({
   onSave: (data: string) => void;
 }) => {
   const [controllerBottom, setControllerBottom] = useState(0);
-  const initialViewportHeight = useMemo(() => window.visualViewport.height, []);
   useEffect(() => {
+    const initialViewportHeight = window.visualViewport.height;
     function resizeHandler() {
       const currentViewportHeight = window.visualViewport.height;
       setControllerBottom(initialViewportHeight - currentViewportHeight);
@@ -27,7 +27,7 @@ const EditorModal = ({
     window.visualViewport.addEventListener("resize", resizeHandler);
     return () =>
       window.visualViewport.removeEventListener("resize", resizeHandler);
-  }, [initialViewportHeight]);
+  }, []);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const focusInput = () => {
