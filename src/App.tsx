@@ -35,12 +35,8 @@ const App = () => {
   const [activeModal, setActiveModal] = useState(true);
 
   useEffect(() => {
-    const initialVisualViewPortHeight = window.visualViewport.height;
     function resizeHandler() {
-      const currentVisualViewPortHeight = window.visualViewport.height;
-      setActiveModal(
-        initialVisualViewPortHeight - currentVisualViewPortHeight === 0
-      );
+      setActiveModal(window.innerHeight - window.visualViewport.height === 0);
     }
     window.visualViewport.addEventListener("resize", resizeHandler);
     return () =>
@@ -48,7 +44,6 @@ const App = () => {
   }, []);
   return (
     <div>
-      <h1>Todos</h1>
       <div style={{ flexDirection: "column" }}>
         {_.map(todoNodes, (node) => (
           <div key={node.id} style={{ flexDirection: "column" }}>
@@ -63,7 +58,7 @@ const App = () => {
           <p>title: {tempTodo}</p>
         </div>
       ))}
-      {Boolean(activeModal) && (
+      {activeModal && (
         <button
           style={{
             position: "fixed",
