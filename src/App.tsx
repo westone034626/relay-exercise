@@ -2,7 +2,7 @@ import { useLazyLoadQuery } from "react-relay";
 import graphql from "babel-plugin-relay/macro";
 import { AppQuery } from "./__generated__/AppQuery.graphql";
 import _ from "lodash";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditorModal from "./components/EditorModal";
 
 const App = () => {
@@ -32,6 +32,20 @@ const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [tempTodos, setTempTodos] = useState<string[]>([]);
+  const [activeModal, setActiveModal] = useState(true);
+
+  const initialVisualViewPortHeight = window.visualViewport.height;
+  useEffect(() => {
+    function resizeHandler() {
+      const currentVisualViewPortHeight = window.visualViewport.height;
+      setActiveModal(
+        initialVisualViewPortHeight - currentVisualViewPortHeight === 0
+      );
+    }
+    window.visualViewport.addEventListener("resize", resizeHandler);
+    return () =>
+      window.visualViewport.removeEventListener("resize", resizeHandler);
+  }, []);
   return (
     <div>
       <h1>Todos</h1>
@@ -49,16 +63,18 @@ const App = () => {
           <p>title: {tempTodo}</p>
         </div>
       ))}
-      <button
-        style={{
-          position: "fixed",
-          bottom: 50,
-          right: 50,
-        }}
-        onClick={() => setModalOpen((prev) => !prev)}
-      >
-        Add To do
-      </button>
+      {Boolean(activeModal) && (
+        <button
+          style={{
+            position: "fixed",
+            bottom: 50,
+            right: 50,
+          }}
+          onClick={() => setModalOpen((prev) => !prev)}
+        >
+          Add To do
+        </button>
+      )}
       {modalOpen && (
         <EditorModal
           style={{
