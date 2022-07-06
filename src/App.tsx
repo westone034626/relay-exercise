@@ -36,11 +36,13 @@ const App = () => {
 
   useEffect(() => {
     function resizeHandler() {
-      setActiveModal(window.innerHeight - window.visualViewport.height === 0);
+      setActiveModal(
+        window.innerHeight - (window.visualViewport?.height || 0) === 0
+      );
     }
-    window.visualViewport.addEventListener("resize", resizeHandler);
+    window.visualViewport?.addEventListener("resize", resizeHandler);
     return () =>
-      window.visualViewport.removeEventListener("resize", resizeHandler);
+      window.visualViewport?.removeEventListener("resize", resizeHandler);
   }, []);
   return (
     <div>
