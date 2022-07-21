@@ -1,10 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useLazyLoadQuery } from "react-relay";
-import graphql from "babel-plugin-relay/macro";
-import { AppQuery } from "./__generated__/AppQuery.graphql";
 import _ from "lodash";
-import { useEffect, useState } from "react";
-import EditorModal from "./components/EditorModal";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import SignUp from "./screens/SignUp";
