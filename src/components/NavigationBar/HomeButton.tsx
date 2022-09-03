@@ -1,16 +1,17 @@
-import styles from "./HomeButton.module.css";
+import { CSSProperties } from "react";
 import { useNavigate } from "react-router";
+import Button from "../Button";
 
-function HomeButton() {
+interface HomeButton {
+  style?: CSSProperties;
+}
+
+function HomeButton({ style }: HomeButton) {
   const navigation = useNavigate();
   const goHome = () => {
     navigation("/");
   };
-  return (
-    <button className={styles.container} onClick={goHome}>
-      오늘의 체크
-    </button>
-  );
+  return <Button title="오늘의 체크" onClick={goHome} style={style} />;
 }
 
 export default HomeButton;
