@@ -1,7 +1,7 @@
-import React from "react";
+import styles from "./Navigation.module.css";
 
 function Navigation() {
-  return <div>Navigation</div>;
+  return <div className={styles.container}>Navigation</div>;
 }
 
 export default Navigation;
