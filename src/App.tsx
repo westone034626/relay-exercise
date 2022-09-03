@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./screens/Home";
-import Login from "./screens/Login";
-import SignUp from "./screens/SignUp";
-import TodoEditor from "./screens/TodoEditor";
-import Todos from "./screens/Todos";
+import Home from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import SignUpScreen from "./screens/SignUpScreen";
+import TodoEditorScreen from "./screens/TodoEditorScreen";
+import TodoListScreen from "./screens/TodoListScreen";
 import Layout from "./components/Layout";
 import "./App.css";
 
@@ -13,10 +13,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/mutate" element={<TodoEditor />} />
-          <Route path="/todos" element={<Todos />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/sign-up" element={<SignUpScreen />} />
+          <Route path="/mutate" element={<TodoEditorScreen />} />
+          <Route path="/todo-list" element={<TodoListScreen />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -8,10 +8,10 @@ interface LoginButton {
 
 function LoginButton({ style }: LoginButton) {
   const navigation = useNavigate();
-  const goLoginPage = () => {
+  const goLoginScreen = () => {
     navigation("/login");
   };
-  return <Button title="로그인" onClick={goLoginPage} style={style} />;
+  return <Button title="로그인" onClick={goLoginScreen} style={style} />;
 }
 
 export default LoginButton;

@@ -8,10 +8,10 @@ interface SignUpButton {
 
 function SignUpButton({ style }: SignUpButton) {
   const navigation = useNavigate();
-  const goSignUpPage = () => {
+  const goSignUpScreen = () => {
     navigation("/sign-up");
   };
-  return <Button title="회원가입" onClick={goSignUpPage} style={style} />;
+  return <Button title="회원가입" onClick={goSignUpScreen} style={style} />;
 }
 
 export default SignUpButton;
