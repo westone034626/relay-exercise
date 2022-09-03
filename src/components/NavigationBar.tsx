@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import styles from "./NavigationBar.module.css";
+import HomeButton from "./NavigationBar/HomeButton";
 
 interface NavigationBar {
   left?: React.ReactNode;
@@ -10,7 +11,7 @@ interface NavigationBar {
 function NavigationBar({ left, right, style }: NavigationBar) {
   return (
     <nav className={styles.container} style={style}>
-      {left && <div className={styles.left}>{left}</div>}
+      {<div className={styles.left}>{left ? left : <HomeButton />}</div>}
       {right && <div className={styles.right}>{right}</div>}
     </nav>
   );
