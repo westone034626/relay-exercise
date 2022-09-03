@@ -1,11 +1,11 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Navigation from "./Navigation";
+import NavigationBar from "./NavigationBar";
 
 function Layout() {
   return (
     <>
-      <Navigation />
+      <NavigationBar />
       <Outlet />
     </>
   );

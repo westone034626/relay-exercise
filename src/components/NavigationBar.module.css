@@ -1,0 +1,10 @@
+.container {
+  position: relative;
+}
+
+.left {
+}
+
+.right {
+  margin-left: auto;
+}
