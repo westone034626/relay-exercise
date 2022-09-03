@@ -5,6 +5,7 @@ import SignUp from "./screens/SignUp";
 import TodoEditor from "./screens/TodoEditor";
 import Todos from "./screens/Todos";
 import Layout from "./components/Layout";
+import "./App.css";
 
 const App = () => {
   return (
