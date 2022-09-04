@@ -1,54 +1,68 @@
-import styles from './LoginForm.module.css';
-import { useForm } from 'react-hook-form';
-import { CSSProperties } from 'react';
-import WhiteSpace from '../WhiteSpace';
+import styles from "./LoginForm.module.css";
+import { CSSProperties } from "react";
+import { Form, Input } from "antd";
+import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 
-type LoginFormData = {
+interface LoginFormData {
   email: string;
   password: string;
-};
-
+}
 interface LoginForm {
   style?: CSSProperties;
+  onFinish: (data: LoginFormData) => void;
+  onFinishFailed: (errorInfo: ValidateErrorEntity<LoginFormData>) => void;
 }
 
-export default function LoginForm({ style }: LoginForm) {
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<LoginFormData>();
-  const onSubmit = handleSubmit((data) => console.log(data));
-
+export default function LoginForm({
+  style,
+  onFinish,
+  onFinishFailed,
+}: LoginForm) {
   return (
-    <form
-      onSubmit={(data) => {
-        console.log(data);
-        onSubmit(data);
-      }}
-      className={styles.container}
+    <Form
       style={style}
+      name="loginForm"
+      wrapperCol={{ span: 24 }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
     >
-      <input
+      <Form.Item
         name="email"
-        className={styles.inputItem}
-        placeholder="이메일"
-        {...(register('email'), { required: true })}
-      />
-      <WhiteSpace size="md" />
-      <input
+        rules={[{ required: true, message: "이메일을 입력해주세요." }]}
+      >
+        <Input
+          type={"email"}
+          placeholder="이메일"
+          style={getInputItemStyle()}
+          className={styles.removeAutoCompleteHighlight}
+        />
+      </Form.Item>
+
+      <Form.Item
         name="password"
-        className={styles.inputItem}
-        placeholder="비밀번호"
-        type="password"
-        {...(register('password'), { required: true })}
-      />
-      <WhiteSpace size="md" />
-      <button type="submit" className={styles.submitButton}>
-        <p className={styles.submitText}>로그인</p>
-      </button>
-    </form>
+        rules={[{ required: true, message: "비밀번호를 입력해주세요." }]}
+      >
+        <Input
+          type="password"
+          placeholder="비밀번호"
+          style={getInputItemStyle()}
+          className={styles.removeAutoCompleteHighlight}
+        />
+      </Form.Item>
+
+      <Form.Item>
+        <button className={styles.submitButton}>로그인</button>
+      </Form.Item>
+    </Form>
   );
+
+  function getInputItemStyle(): CSSProperties {
+    return {
+      padding: 12,
+      backgroundColor: "#ffffff",
+      border: "1px solid rgba(0, 0, 0, 0.3)",
+      borderRadius: 12,
+      width: "100%",
+    };
+  }
 }
