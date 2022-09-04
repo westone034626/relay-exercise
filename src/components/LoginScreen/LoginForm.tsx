@@ -1,34 +1,54 @@
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import styles from './LoginForm.module.css';
+import { useForm } from 'react-hook-form';
+import { CSSProperties } from 'react';
+import WhiteSpace from '../WhiteSpace';
 
-type Inputs = {
-  example: string;
-  exampleRequired: string;
+type LoginFormData = {
+  email: string;
+  password: string;
 };
 
-export default function LoginForm() {
+interface LoginForm {
+  style?: CSSProperties;
+}
+
+export default function LoginForm({ style }: LoginForm) {
   const {
     register,
+    setValue,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-
-  console.log(watch("example")); // watch input value by passing the name of it
+  } = useForm<LoginFormData>();
+  const onSubmit = handleSubmit((data) => console.log(data));
 
   return (
-    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
-      <input defaultValue="test" {...register("example")} />
-
-      {/* include validation with required or other standard HTML validation rules */}
-      <input {...register("exampleRequired", { required: true })} />
-      {/* errors will return when field validation fails  */}
-      {errors.exampleRequired && <span>This field is required</span>}
-
-      <input type="submit" />
+    <form
+      onSubmit={(data) => {
+        console.log(data);
+        onSubmit(data);
+      }}
+      className={styles.container}
+      style={style}
+    >
+      <input
+        name="email"
+        className={styles.inputItem}
+        placeholder="이메일"
+        {...(register('email'), { required: true })}
+      />
+      <WhiteSpace size="md" />
+      <input
+        name="password"
+        className={styles.inputItem}
+        placeholder="비밀번호"
+        type="password"
+        {...(register('password'), { required: true })}
+      />
+      <WhiteSpace size="md" />
+      <button type="submit" className={styles.submitButton}>
+        <p className={styles.submitText}>로그인</p>
+      </button>
     </form>
   );
 }
