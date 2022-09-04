@@ -60,7 +60,6 @@ export default function LoginForm({
     return {
       padding: 12,
       backgroundColor: "#ffffff",
-      border: "1px solid rgba(0, 0, 0, 0.3)",
       borderRadius: 12,
       width: "100%",
     };
