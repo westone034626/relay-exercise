@@ -13,6 +13,7 @@
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
     "@types/react-relay": "^13.0.2",
+    "antd": "^4.23.0",
     "babel-plugin-relay": "^14.0.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
