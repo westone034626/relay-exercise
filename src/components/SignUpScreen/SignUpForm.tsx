@@ -13,12 +13,14 @@ interface SignUpForm {
   style?: CSSProperties;
   onFinish: (data: SignUpFormData) => void;
   onFinishFailed: (errorInfo: ValidateErrorEntity<SignUpFormData>) => void;
+  isProgressing: boolean;
 }
 
 export default function SignUpForm({
   style,
   onFinish,
   onFinishFailed,
+  isProgressing,
 }: SignUpForm) {
   return (
     <Form
@@ -86,12 +88,14 @@ export default function SignUpForm({
 
       <Form.Item>
         <button
+          style={{ opacity: isProgressing ? 0.5 : 1 }}
+          disabled={isProgressing}
           onSubmit={(e) => {
             e.preventDefault();
           }}
           className={styles.submitButton}
         >
-          회원가입
+          {isProgressing ? "진행 중..." : "회원가입"}
         </button>
       </Form.Item>
     </Form>
