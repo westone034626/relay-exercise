@@ -4,6 +4,7 @@ import { Form, Input } from "antd";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 
 export interface SignUpFormData {
+  username: string;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -27,6 +28,13 @@ export default function SignUpForm({
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
+      <Form.Item
+        name="username"
+        rules={[{ required: true, message: "닉네임을 입력해주세요." }]}
+      >
+        <Input placeholder="닉네임" style={getInputItemStyle()} />
+      </Form.Item>
+
       <Form.Item
         name="email"
         rules={[
