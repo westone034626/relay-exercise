@@ -3,20 +3,22 @@ import { CSSProperties } from "react";
 import { Form, Input } from "antd";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 
-interface LoginFormData {
-  email: string;
+export interface LoginFormData {
+  username: string;
   password: string;
 }
 interface LoginForm {
   style?: CSSProperties;
   onFinish: (data: LoginFormData) => void;
   onFinishFailed: (errorInfo: ValidateErrorEntity<LoginFormData>) => void;
+  isProgressing: boolean;
 }
 
 export default function LoginForm({
   style,
   onFinish,
   onFinishFailed,
+  isProgressing,
 }: LoginForm) {
   return (
     <Form
@@ -27,12 +29,11 @@ export default function LoginForm({
       onFinishFailed={onFinishFailed}
     >
       <Form.Item
-        name="email"
-        rules={[{ required: true, message: "이메일을 입력해주세요." }]}
+        name="username"
+        rules={[{ required: true, message: "아이디를 입력해주세요." }]}
       >
         <Input
-          type={"email"}
-          placeholder="이메일"
+          placeholder="아이디"
           style={getInputItemStyle()}
           className={styles.removeAutoCompleteHighlight}
         />
@@ -51,7 +52,13 @@ export default function LoginForm({
       </Form.Item>
 
       <Form.Item>
-        <button className={styles.submitButton}>로그인</button>
+        <button
+          style={{ opacity: isProgressing ? 0.5 : 1 }}
+          disabled={isProgressing}
+          className={styles.submitButton}
+        >
+          {isProgressing ? "진행 중..." : "로그인"}
+        </button>
       </Form.Item>
     </Form>
   );
