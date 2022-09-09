@@ -32,9 +32,9 @@ export default function SignUpForm({
     >
       <Form.Item
         name="username"
-        rules={[{ required: true, message: "닉네임을 입력해주세요." }]}
+        rules={[{ required: true, message: "아이디를 입력해주세요." }]}
       >
-        <Input placeholder="닉네임" style={getInputItemStyle()} />
+        <Input placeholder="아이디" style={getInputItemStyle()} />
       </Form.Item>
 
       <Form.Item
