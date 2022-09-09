@@ -12,3 +12,7 @@
 1. relay.config.js의 language를 typescript로 입력해놔서 신경 안쓰고 있었는데 package.json의 relay > language는 javascript로 되어있었어서 에러 발생했던 문제
 2. fetchGraphQL에서 header 값 설정 안해줘서 데이터 fetch 계속 실패하던 문제
 3. package.json의 homepage 입력을 안해놔서 가상 node에서 ./build 폴더 내부의 main.js 파일에 접근할 때 잘못된 접근 경로로 설정된 문제
+
+# 추가되면 좋은 부분
+
+1. 아이디를 영어만 입력할 수 있도록 예외처리하기
