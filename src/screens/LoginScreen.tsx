@@ -3,24 +3,29 @@ import SectionTitle from "../components/SectionTitle";
 import WhiteSpace from "../components/WhiteSpace";
 import styles from "./LoginScreen.module.css";
 
-import { Navigate, useNavigate } from "react-router";
+import { Location, Navigate, useLocation, useNavigate } from "react-router";
 import { useAuth } from "../components/AuthProvider";
 import { useState } from "react";
 
+interface CustomLocation extends Location {
+  state: {
+    from: Location;
+  } | null;
+}
+
 function LoginScreen() {
+  const location = useLocation() as CustomLocation;
+  const safeRedirectPathname = location.state?.from.pathname || "/";
   const auth = useAuth();
   const [isLoginProgressing, setIsLoginProgressing] = useState(false);
   const navigation = useNavigate();
-  const goHome = () => {
-    navigation("/");
-  };
   const onLoginFormFinish = (values: LoginFormData) => {
     setIsLoginProgressing(true);
     auth
       ?.login(values)
       .then((r) => {
         console.log("r ", r);
-        goHome();
+        navigation(safeRedirectPathname, { replace: true });
       })
       .catch((e) => {
         console.log("e ", e);
