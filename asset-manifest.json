@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.js": "/relay-exercise/static/js/main.3d90c946.js",
+    "main.css": "/relay-exercise/static/css/main.4d84d9be.css",
+    "main.js": "/relay-exercise/static/js/main.611b328c.js",
     "index.html": "/relay-exercise/index.html",
-    "main.3d90c946.js.map": "/relay-exercise/static/js/main.3d90c946.js.map"
+    "main.4d84d9be.css.map": "/relay-exercise/static/css/main.4d84d9be.css.map",
+    "main.611b328c.js.map": "/relay-exercise/static/js/main.611b328c.js.map"
   },
   "entrypoints": [
-    "static/js/main.3d90c946.js"
+    "static/css/main.4d84d9be.css",
+    "static/js/main.611b328c.js"
   ]
 }
