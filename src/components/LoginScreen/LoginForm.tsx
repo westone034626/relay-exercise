@@ -7,7 +7,7 @@ export interface LoginFormData {
   username: string;
   password: string;
 }
-interface LoginForm {
+interface LoginFormProps {
   style?: CSSProperties;
   onFinish: (data: LoginFormData) => void;
   onFinishFailed: (errorInfo: ValidateErrorEntity<LoginFormData>) => void;
@@ -19,7 +19,7 @@ export default function LoginForm({
   onFinish,
   onFinishFailed,
   isProgressing,
-}: LoginForm) {
+}: LoginFormProps) {
   return (
     <Form
       style={style}

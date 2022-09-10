@@ -2,11 +2,11 @@ import React, { CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 
-interface LoginButton {
+interface LoginButtonProps {
   style?: CSSProperties;
 }
 
-function LoginButton({ style }: LoginButton) {
+function LoginButton({ style }: LoginButtonProps) {
   const navigation = useNavigate();
   const goLoginScreen = () => {
     navigation("/login");

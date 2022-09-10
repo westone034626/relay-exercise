@@ -11,11 +11,11 @@ const SIZE_MAP = {
   xxl: 28,
 };
 
-interface WhiteSpace {
+interface WhiteSpaceProps {
   size?: Size;
 }
 
-function WhiteSpace({ size = "md" }: WhiteSpace) {
+function WhiteSpace({ size = "md" }: WhiteSpaceProps) {
   const sizeNumber = SIZE_MAP[size];
   return <div style={{ height: sizeNumber, width: 1 }}></div>;
 }

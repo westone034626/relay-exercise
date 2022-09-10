@@ -9,7 +9,7 @@ export interface SignUpFormData {
   password: string;
   passwordConfirm: string;
 }
-interface SignUpForm {
+interface SignUpFormProps {
   style?: CSSProperties;
   onFinish: (data: SignUpFormData) => void;
   onFinishFailed: (errorInfo: ValidateErrorEntity<SignUpFormData>) => void;
@@ -21,7 +21,7 @@ export default function SignUpForm({
   onFinish,
   onFinishFailed,
   isProgressing,
-}: SignUpForm) {
+}: SignUpFormProps) {
   return (
     <Form
       style={style}

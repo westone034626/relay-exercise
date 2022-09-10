@@ -2,11 +2,11 @@ import { CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 
-interface SignUpButton {
+interface SignUpButtonProps {
   style?: CSSProperties;
 }
 
-function SignUpButton({ style }: SignUpButton) {
+function SignUpButton({ style }: SignUpButtonProps) {
   const navigation = useNavigate();
   const goSignUpScreen = () => {
     navigation("/sign-up");

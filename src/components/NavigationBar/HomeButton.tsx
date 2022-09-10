@@ -2,11 +2,11 @@ import { CSSProperties } from "react";
 import { useNavigate } from "react-router";
 import Button from "../Button";
 
-interface HomeButton {
+interface HomeButtonProps {
   style?: CSSProperties;
 }
 
-function HomeButton({ style }: HomeButton) {
+function HomeButton({ style }: HomeButtonProps) {
   const navigation = useNavigate();
   const goHome = () => {
     navigation("/");

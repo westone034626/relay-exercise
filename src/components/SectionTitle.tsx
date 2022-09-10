@@ -3,14 +3,19 @@ import { NavigateOptions, To, useNavigate } from "react-router-dom";
 import styles from "./SectionTitle.module.css";
 import WhiteSpace from "./WhiteSpace";
 
-interface SectionTitle {
+interface SectionTitleProps {
   title: string;
   subTitle?: string;
   style?: CSSProperties;
   sectionTo?: { to: To; options?: NavigateOptions | undefined };
 }
 
-function SectionTitle({ title, subTitle, style, sectionTo }: SectionTitle) {
+function SectionTitle({
+  title,
+  subTitle,
+  style,
+  sectionTo,
+}: SectionTitleProps) {
   const navigation = useNavigate();
   return (
     <div
