@@ -1,54 +1,43 @@
 import LoginForm, { LoginFormData } from "../components/LoginScreen/LoginForm";
 import SectionTitle from "../components/SectionTitle";
 import WhiteSpace from "../components/WhiteSpace";
-import { useMutation } from "react-relay";
 import styles from "./LoginScreen.module.css";
-import graphql from "babel-plugin-relay/macro";
-import { LoginScreenLoginMutation } from "./__generated__/LoginScreenLoginMutation.graphql";
+
 import { useNavigate } from "react-router";
+import { useAuth } from "../components/AuthProvider";
+import { useState } from "react";
 
 function LoginScreen() {
+  const auth = useAuth();
+  const [isLoginProgressing, setIsLoginProgressing] = useState(false);
   const navigation = useNavigate();
   const goHome = () => {
     navigation("/");
   };
   const onLoginFormFinish = (values: LoginFormData) => {
-    commitLogin({
-      variables: { input: values },
-      onCompleted: (res, rej) => {
-        if (rej) {
-          console.log(rej);
-          return;
-        }
-        console.log(res);
+    setIsLoginProgressing(true);
+    auth
+      ?.login(values)
+      .then((r) => {
+        console.log("r ", r);
         goHome();
-      },
-      onError: console.log,
-    });
+      })
+      .catch((e) => {
+        console.log("e ", e);
+      })
+      .finally(() => {
+        setIsLoginProgressing(false);
+      });
   };
   const onLoginFormFinishFailed = () => {};
 
-  const [commitLogin, isInFlightLogin] =
-    useMutation<LoginScreenLoginMutation>(graphql`
-      mutation LoginScreenLoginMutation($input: LogInInput!) {
-        logIn(input: $input) {
-          viewer {
-            sessionToken
-            user {
-              username
-              email
-            }
-          }
-        }
-      }
-    `);
   return (
     <section className={styles.container}>
       <WhiteSpace size={"md"} />
       <SectionTitle title="로그인" style={{ marginLeft: 16 }} />
       <WhiteSpace size={"xl"} />
       <LoginForm
-        isProgressing={isInFlightLogin}
+        isProgressing={isLoginProgressing}
         style={{ padding: "0 36px" }}
         onFinish={onLoginFormFinish}
         onFinishFailed={onLoginFormFinishFailed}

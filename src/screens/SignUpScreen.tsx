@@ -1,55 +1,37 @@
-import { useMutation } from "react-relay";
-import graphql from "babel-plugin-relay/macro";
 import SectionTitle from "../components/SectionTitle";
 import SignUpForm, {
   SignUpFormData,
 } from "../components/SignUpScreen/SignUpForm";
 import WhiteSpace from "../components/WhiteSpace";
 import styles from "./LoginScreen.module.css";
-import { SignUpScreenCreateUserMutation } from "./__generated__/SignUpScreenCreateUserMutation.graphql";
 import { useNavigate } from "react-router";
+import { useAuth } from "../components/AuthProvider";
+import { useState } from "react";
 
 function SignUpScreen() {
   const navigation = useNavigate();
+  const [isSignUpProgressing, setIsSignUpProgressing] = useState(false);
+  const auth = useAuth();
   const goHome = () => {
     navigation("/");
   };
 
-  const [commitSignUp, isInFlightSignUp] =
-    useMutation<SignUpScreenCreateUserMutation>(graphql`
-      mutation SignUpScreenCreateUserMutation($fields: CreateUserFieldsInput!) {
-        signUp(input: { fields: $fields }) {
-          viewer {
-            sessionToken
-            user {
-              username
-              email
-            }
-          }
-        }
-      }
-    `);
-
   const onSignUpFormFinish = (values: SignUpFormData) => {
-    commitSignUp({
-      variables: {
-        fields: {
-          username: values.username,
-          email: values.email,
-          password: values.password,
-        },
-      },
-      onCompleted: (res, rej) => {
-        // TODO: rej일 때 유형을 분류하고 유형에 따라 유저에게 메시지로 알려주기
-        if (rej) {
-          console.log(rej);
-          return;
-        }
-        console.log(res);
+    setIsSignUpProgressing(true);
+    auth
+      ?.signUp({
+        username: values.username,
+        password: values.password,
+        email: values.email,
+      })
+      .then((r) => {
+        console.log("r: ", r);
         goHome();
-      },
-      onError: console.log,
-    });
+      })
+      .catch((e) => {
+        console.log("e: ", e);
+      })
+      .finally(() => setIsSignUpProgressing(false));
   };
   const onSignUpFormFinishFailed = () => {};
   return (
@@ -61,7 +43,7 @@ function SignUpScreen() {
         style={{ padding: "0 36px" }}
         onFinish={onSignUpFormFinish}
         onFinishFailed={onSignUpFormFinishFailed}
-        isProgressing={isInFlightSignUp}
+        isProgressing={isSignUpProgressing}
       />
     </section>
   );
