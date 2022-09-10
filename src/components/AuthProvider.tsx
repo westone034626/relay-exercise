@@ -108,14 +108,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [user, setUser] = useState<UserData | null>(viewer?.user || null);
 
-  useUpdateEffect(() => {
-    if (sessionId) {
-      setUser(viewer?.user || null);
-    } else {
-      setUser(null);
-    }
-  }, [sessionId]);
-
   const login = useCallback(async (values: LogInInput) => {
     return new Promise<AuthProviderLoginMutation$data>((onSuccess, onFail) => {
       commitLogin({
@@ -126,6 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             return;
           }
           setSessionId(res.logIn?.viewer.sessionToken || "");
+          setUser(res.logIn?.viewer.user || null);
           onSuccess(res);
         },
         onError: onFail,
@@ -142,8 +135,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             onFail(rej);
             return;
           }
-          onSuccess(res);
           setSessionId("");
+          setUser(null);
+          onSuccess(res);
         },
         onError: onFail,
       });
@@ -160,7 +154,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
               onFail(rej);
               return;
             }
-            setSessionId("");
+            setSessionId(res.signUp?.viewer.sessionToken || "");
+            setUser(res.signUp?.viewer.user || null);
             onSuccess(res);
           },
           onError: onFail,
