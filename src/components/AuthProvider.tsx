@@ -1,4 +1,4 @@
-import { useSessionStorageState, useUpdateEffect } from "ahooks";
+import { useLocalStorageState } from "ahooks";
 import React, {
   createContext,
   useCallback,
@@ -85,7 +85,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     `);
 
-  const [sessionId, setSessionId] = useSessionStorageState<string>(
+  const [sessionId, setSessionId] = useLocalStorageState<string>(
     "todayChecksSessionId",
     {
       defaultValue: "",

@@ -5,7 +5,7 @@ export const fetchGraphQL = async (
   request: RequestParameters,
   variables: Variables
 ) => {
-  const sessionId = sessionStorage.getItem("todayChecksSessionId");
+  const sessionId = localStorage.getItem("todayChecksSessionId");
   const response = await fetch(process.env.REACT_APP_SERVER_URL as string, {
     method: "POST",
     headers: {
