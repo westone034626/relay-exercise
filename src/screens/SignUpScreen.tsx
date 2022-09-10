@@ -4,7 +4,7 @@ import SignUpForm, {
 } from "../components/SignUpScreen/SignUpForm";
 import WhiteSpace from "../components/WhiteSpace";
 import styles from "./LoginScreen.module.css";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../components/AuthProvider";
 import { useState } from "react";
 
@@ -34,7 +34,9 @@ function SignUpScreen() {
       .finally(() => setIsSignUpProgressing(false));
   };
   const onSignUpFormFinishFailed = () => {};
-  return (
+  return auth?.user ? (
+    <Navigate replace to="/" />
+  ) : (
     <section className={styles.container}>
       <WhiteSpace size={"md"} />
       <SectionTitle title="회원가입" style={{ marginLeft: 16 }} />

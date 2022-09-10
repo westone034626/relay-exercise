@@ -3,7 +3,7 @@ import SectionTitle from "../components/SectionTitle";
 import WhiteSpace from "../components/WhiteSpace";
 import styles from "./LoginScreen.module.css";
 
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useAuth } from "../components/AuthProvider";
 import { useState } from "react";
 
@@ -31,7 +31,9 @@ function LoginScreen() {
   };
   const onLoginFormFinishFailed = () => {};
 
-  return (
+  return auth?.user ? (
+    <Navigate replace to="/" />
+  ) : (
     <section className={styles.container}>
       <WhiteSpace size={"md"} />
       <SectionTitle title="로그인" style={{ marginLeft: 16 }} />
