@@ -45,45 +45,42 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [commitLogin, isInFlightLogin] =
-    useMutation<AuthProviderLoginMutation>(graphql`
-      mutation AuthProviderLoginMutation($input: LogInInput!) {
-        logIn(input: $input) {
-          viewer {
-            sessionToken
-            user {
-              username
-              email
-            }
+  const [commitLogin] = useMutation<AuthProviderLoginMutation>(graphql`
+    mutation AuthProviderLoginMutation($input: LogInInput!) {
+      logIn(input: $input) {
+        viewer {
+          sessionToken
+          user {
+            username
+            email
           }
         }
       }
-    `);
+    }
+  `);
 
-  const [commitSignUp, isInFlightSignUp] =
-    useMutation<AuthProviderCreateUserMutation>(graphql`
-      mutation AuthProviderCreateUserMutation($fields: CreateUserFieldsInput!) {
-        signUp(input: { fields: $fields }) {
-          viewer {
-            sessionToken
-            user {
-              username
-              email
-            }
+  const [commitSignUp] = useMutation<AuthProviderCreateUserMutation>(graphql`
+    mutation AuthProviderCreateUserMutation($fields: CreateUserFieldsInput!) {
+      signUp(input: { fields: $fields }) {
+        viewer {
+          sessionToken
+          user {
+            username
+            email
           }
         }
       }
-    `);
+    }
+  `);
 
-  const [commitLogout, inInFlightLogout] =
-    useMutation<AuthProviderLogOutMutation>(graphql`
-      mutation AuthProviderLogOutMutation {
-        logOut(input: { clientMutationId: "logOut" }) {
-          clientMutationId
-          ok
-        }
+  const [commitLogout] = useMutation<AuthProviderLogOutMutation>(graphql`
+    mutation AuthProviderLogOutMutation {
+      logOut(input: { clientMutationId: "logOut" }) {
+        clientMutationId
+        ok
       }
-    `);
+    }
+  `);
 
   const [sessionId, setSessionId] = useLocalStorageState<string>(
     "todayChecksSessionId",
@@ -108,23 +105,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [user, setUser] = useState<UserData | null>(viewer?.user || null);
 
-  const login = useCallback(async (values: LogInInput) => {
-    return new Promise<AuthProviderLoginMutation$data>((onSuccess, onFail) => {
-      commitLogin({
-        variables: { input: values },
-        onCompleted: (res, rej) => {
-          if (rej) {
-            onFail(rej);
-            return;
-          }
-          setSessionId(res.logIn?.viewer.sessionToken || "");
-          setUser(res.logIn?.viewer.user || null);
-          onSuccess(res);
-        },
-        onError: onFail,
-      });
-    });
-  }, []);
+  const login = useCallback(
+    async (values: LogInInput) => {
+      return new Promise<AuthProviderLoginMutation$data>(
+        (onSuccess, onFail) => {
+          commitLogin({
+            variables: { input: values },
+            onCompleted: (res, rej) => {
+              if (rej) {
+                onFail(rej);
+                return;
+              }
+              setSessionId(res.logIn?.viewer.sessionToken || "");
+              setUser(res.logIn?.viewer.user || null);
+              onSuccess(res);
+            },
+            onError: onFail,
+          });
+        }
+      );
+    },
+    [commitLogin, setSessionId, setUser]
+  );
 
   const logout = useCallback(async () => {
     return new Promise<AuthProviderLogOutMutation$data>((onSuccess, onFail) => {
@@ -142,27 +144,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         onError: onFail,
       });
     });
-  }, []);
+  }, [commitLogout, setSessionId, setUser]);
 
-  const signUp = useCallback(async (values: CreateUserFieldsInput) => {
-    return new Promise<AuthProviderCreateUserMutation$data>(
-      (onSuccess, onFail) => {
-        commitSignUp({
-          variables: { fields: values },
-          onCompleted: (res, rej) => {
-            if (rej) {
-              onFail(rej);
-              return;
-            }
-            setSessionId(res.signUp?.viewer.sessionToken || "");
-            setUser(res.signUp?.viewer.user || null);
-            onSuccess(res);
-          },
-          onError: onFail,
-        });
-      }
-    );
-  }, []);
+  const signUp = useCallback(
+    async (values: CreateUserFieldsInput) => {
+      return new Promise<AuthProviderCreateUserMutation$data>(
+        (onSuccess, onFail) => {
+          commitSignUp({
+            variables: { fields: values },
+            onCompleted: (res, rej) => {
+              if (rej) {
+                onFail(rej);
+                return;
+              }
+              setSessionId(res.signUp?.viewer.sessionToken || "");
+              setUser(res.signUp?.viewer.user || null);
+              onSuccess(res);
+            },
+            onError: onFail,
+          });
+        }
+      );
+    },
+    [commitSignUp, setSessionId, setUser]
+  );
   const auth = useMemo(() => {
     return { user, login, logout, signUp };
   }, [user, login, logout, signUp]);
